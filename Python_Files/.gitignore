@@ -1,0 +1,13 @@
+(echo venv/
+echo env/
+echo _pycache_/
+echo *.pyc
+echo *.pyo
+echo .ipynb_checkpoints/
+echo .DS_Store
+echo Thumbs.db
+echo .vscode/
+echo .idea/
+echo .streamlit/secrets.toml
+echo .env
+) > .gitignore
