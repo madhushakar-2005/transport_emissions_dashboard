@@ -14,17 +14,25 @@ Cleans the raw CSV by:
 
 import pandas as pd
 import pycountry_convert as pc
-import os
+from pathlib import Path
+
+# ----------------------------------------------------------------------
+# 0. SET UP PATHS (works from any folder, any machine)
+# ----------------------------------------------------------------------
+# PROJECT_ROOT = the "Data Science" folder (one level up from this script)
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+RAW_CSV = PROJECT_ROOT / "data" / "raw" / "WRI_CLIMATEWATCH_ALL_GHG_TRANSPORT.csv"
+PROCESSED_DIR = PROJECT_ROOT / "data" / "processed"
+
+# Make sure the output folder exists
+PROCESSED_DIR.mkdir(parents=True, exist_ok=True)
 
 # ----------------------------------------------------------------------
 # 1. LOAD RAW DATA
 # ----------------------------------------------------------------------
 print("Loading raw data...")
-df = pd.read_csv("C:\\Users\\DELL\\Desktop\\Data Science\\Raw_Data\\WRI_CLIMATEWATCH_ALL_GHG_TRANSPORT.csv")
+df = pd.read_csv(RAW_CSV)
 print(f"Raw shape: {df.shape[0]} rows x {df.shape[1]} columns")
-
-# Make sure the output folder exists
-os.makedirs("data/processed", exist_ok=True)
 
 # ----------------------------------------------------------------------
 # 2. DROP USELESS COLUMNS (33 of 37 have only 1 unique value)
@@ -123,11 +131,11 @@ df_countries['decade'] = (df_countries['year'] // 10) * 10
 # ----------------------------------------------------------------------
 # 7. SAVE PROCESSED OUTPUTS
 # ----------------------------------------------------------------------
-df_countries.to_csv("data/processed/emissions_clean.csv", index=False)
-df_aggregates.to_csv("data/processed/emissions_aggregates.csv", index=False)
+df_countries.to_csv(PROCESSED_DIR / "emissions_clean.csv", index=False)
+df_aggregates.to_csv(PROCESSED_DIR / "emissions_aggregates.csv", index=False)
 
-print("\nSaved: data/processed/emissions_clean.csv")
-print("Saved: data/processed/emissions_aggregates.csv")
+print(f"\nSaved: {PROCESSED_DIR / 'emissions_clean.csv'}")
+print(f"Saved: {PROCESSED_DIR / 'emissions_aggregates.csv'}")
 
 # ----------------------------------------------------------------------
 # 8. SUMMARY REPORT
